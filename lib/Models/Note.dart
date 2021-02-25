@@ -33,6 +33,10 @@ class Note{
     DateTime formattedDate = DateTime.parse(getDate());
     return DateFormat('dd-MM-yyyy h:mm a').format(formattedDate);
   }
+  String getPostDate() {
+    DateTime formattedDate = DateTime.parse(getDate());
+    return DateFormat(DateFormat.YEAR_MONTH_DAY).format(formattedDate);
+  }
 
   String getTitle() => _title ?? '';
   String getDescription() => _description ?? '';

@@ -23,6 +23,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
   TextEditingController descriptionController = new TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool _autoValidate = false;
+  bool checkedValue = false;
   @override
   Widget build(BuildContext context) {
     final User user = Provider.of<User>(context, listen: false);
@@ -64,6 +65,20 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                   return Validations.isEmptyValidation(val);
                 },
               ),
+              CheckboxListTile(
+                contentPadding: EdgeInsets.zero,
+                title: Text("Publish to public"),
+                value: checkedValue,
+                onChanged: (newValue) {
+                  setState(() {
+                    checkedValue = newValue;
+                  });
+
+                },
+                activeColor: Colors.redAccent,
+                controlAffinity:
+                    ListTileControlAffinity.leading, //  <-- leading Checkbox
+              ),
               SizedBox(
                 height: 25,
               ),
@@ -72,6 +87,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                   : MyButton(
                       btnText: 'Add note',
                       function: () async {
+                        checkedValue ? print ('yes') : print('no');
                         if (_formKey.currentState.validate()) {
                           setState(() {
                             isLoading = true;
@@ -83,7 +99,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                               description: description,
                               userID: user.getID(),
                             );
-                            await user.addNote(note);
+                            await user.addNote(note,checkedValue);
                             clearField();
                             BotToast.showSimpleNotification(
                               title: 'Added',
@@ -97,7 +113,6 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                             print(e.toString());
                           }
                         }
-
                         setState(() {
                           isLoading = false;
                           _autoValidate = true;

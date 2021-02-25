@@ -45,18 +45,19 @@ class User extends Account {
   }
 
   Future<User> fetch(String id) async {
+    DocumentSnapshot doc;
     try {
-      DocumentSnapshot doc =
-          await Database.getDocument(id, Database.usersCollection);
-      return fromJson(doc.data);
+      doc = await Database.getDocument(id, Database.usersCollection);
+      ;
     } catch (e) {
       logout();
     }
+    return fromJson(doc.data);
   }
 
-  Future<void> addNote(Note note) async {
+  Future<void> addNote(Note note, bool isPublic) async {
     await Firestore.instance
-        .collection('Notes')
+        .collection(isPublic ? 'Public' : 'Notes')
         .document()
         .setData(note.toJson(), merge: true);
   }

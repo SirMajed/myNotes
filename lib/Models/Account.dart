@@ -8,7 +8,7 @@ abstract class Account {
     this._email = email;
     this._password = password;
     this._name = name;
-    this._imageUrl = 'https://firebasestorage.googleapis.com/v0/b/mynotes-4f9bd.appspot.com/o/download.png?alt=media&token=adcfd5e0-0c33-4bf8-9834-8afff36679a0';
+    this._imageUrl = imageUrl;
   }
   Future<void> login();
   Future<void> logout();

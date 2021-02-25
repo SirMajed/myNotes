@@ -30,27 +30,36 @@ class Database {
     await Firestore.instance.collection('Users').document(userID).delete();
   }
 
-  static Stream<List<Note>> getNotes(String userID) {
-    return Firestore.instance
-        .collection('Notes')
-        .where('id', isEqualTo: userID)
-        .orderBy('date', descending: true)
-        .snapshots()
-        .map((QuerySnapshot snapshot) {
-      return snapshot.documents.map((doc) {
-        return Note().fromJson(doc.data);
-      }).toList();
-    });
+  static Stream<List<Note>> getNotes(String userID, bool isPublic) {
+    Stream<List<Note>> notes;
+    isPublic
+        ? notes = Firestore.instance
+            .collection('Public')
+            .orderBy('date', descending: true)
+            .snapshots()
+            .map((QuerySnapshot snapshot) {
+            return snapshot.documents.map((doc) {
+              return Note().fromJson(doc.data);
+            }).toList();
+          })
+        : notes = Firestore.instance
+            .collection('Notes')
+            .where('id', isEqualTo: userID)
+            .orderBy('date', descending: true)
+            .snapshots()
+            .map((QuerySnapshot snapshot) {
+            return snapshot.documents.map((doc) {
+              return Note().fromJson(doc.data);
+            }).toList();
+          });
+
+    return notes;
   }
 
-  static Future<void> updateName(String userID, String newName) async{
-    await Firestore.instance
-    .collection('Users')
-    .document(userID)
-    .updateData({
+  static Future<void> updateName(String userID, String newName) async {
+    await Firestore.instance.collection('Users').document(userID).updateData({
       'name': newName,
     });
-
   }
 
   static Future<void> deleteNote(Note note) async {
