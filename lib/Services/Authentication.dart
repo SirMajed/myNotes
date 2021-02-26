@@ -46,6 +46,33 @@ class Authentication {
   static Future<void> deleteAccount(String userID) async {
     FirebaseUser user = await _instance.currentUser();
     try {
+
+      Firestore.instance
+          .collection("Notes")
+          .where("id", isEqualTo: userID)
+          .getDocuments()
+          .then((value) {
+        value.documents.forEach((element) {
+          Firestore.instance
+              .collection("Notes")
+              .document(element.documentID)
+              .delete()
+              .then((value) {
+          });
+        });
+      });
+      Firestore.instance
+          .collection("Public")
+          .where("id", isEqualTo: userID)
+          .getDocuments()
+          .then((value) {
+        value.documents.forEach((element) {
+          Firestore.instance
+              .collection("Public")
+              .document(element.documentID)
+              .delete();
+        });
+      });
       Firestore.instance
           .collection("Users")
           .where("id", isEqualTo: userID)
@@ -57,7 +84,8 @@ class Authentication {
               .document(element.documentID)
               .delete()
               .then((value) {
-            user.delete();
+                            user.delete();
+
           });
         });
       });

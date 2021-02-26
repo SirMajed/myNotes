@@ -87,7 +87,6 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                   : MyButton(
                       btnText: 'Add note',
                       function: () async {
-                        checkedValue ? print ('yes') : print('no');
                         if (_formKey.currentState.validate()) {
                           setState(() {
                             isLoading = true;
@@ -99,7 +98,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                               description: description,
                               userID: user.getID(),
                             );
-                            await user.addNote(note,checkedValue);
+                            await user.addNote(note);
                             clearField();
                             BotToast.showSimpleNotification(
                               title: 'Added',

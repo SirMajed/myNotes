@@ -37,11 +37,11 @@ class _UserNotesScreenState extends State<UserNotesScreen> {
         builder: (context, AsyncSnapshot<List<Note>> snapshot) {
           if (snapshot.hasData) {
             if (snapshot.data.length > 0)
-
               return Expanded(
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 20),
                   child: ListView.separated(
+                    physics: BouncingScrollPhysics(),
                     padding: EdgeInsets.only(top: 15, bottom: 70),
                     separatorBuilder: (context, _) => Container(
                       height: 30,
@@ -58,7 +58,7 @@ class _UserNotesScreenState extends State<UserNotesScreen> {
                 ),
               );
             else
-              return showEmptyHistory();
+              return showEmptyNotes(isPublic);
           } else {
             return Expanded(child: Center(child: CircularProgressIndicator()));
           }
@@ -67,11 +67,12 @@ class _UserNotesScreenState extends State<UserNotesScreen> {
     );
   }
 
-  Widget showEmptyHistory() {
+  Widget showEmptyNotes(bool isPublic) {
     return Expanded(
       child: Center(
         child: Text(
-          'There are no orders in your history',
+          isPublic == false ? 'You did not wrote any notes yet 😐'
+          : 'No one has shared his notes in public yet 😢',
           style: TextStyle(color: Colors.grey),
         ),
       ),

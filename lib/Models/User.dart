@@ -18,14 +18,6 @@ class User extends Account {
     this.id = id;
   }
 
-  // Future<DocumentSnapshot> getD() async{
-  //    DocumentSnapshot doc = await Firestore.instance.collection('Notes')
-  //   .document(getID())
-  //   .get();
-  //   print(doc.data['date']);
-  //   return doc;
-  // }
-
   Map<String, dynamic> toJson() {
     return {
       'name': super.getName(),
@@ -55,11 +47,15 @@ class User extends Account {
     return fromJson(doc.data);
   }
 
-  Future<void> addNote(Note note, bool isPublic) async {
+  Future<void> addNote(Note note) async {
     await Firestore.instance
-        .collection(isPublic ? 'Public' : 'Notes')
+        .collection('Notes')
         .document()
-        .setData(note.toJson(), merge: true);
+        .setData(note.toJson());
+    await Firestore.instance
+        .collection('Public')
+        .document()
+        .setData(note.toJson());
   }
 
   static void uploadFile(File file, String userID) async {

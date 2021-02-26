@@ -20,16 +20,7 @@ class _GlobalNoteCardState extends State<GlobalNoteCard> {
         future: User().fetch(widget.note.getUserID()),
         builder: (context, snapshot) {
           User user = snapshot.data;
-          String img;
           if (snapshot.data != null) {
-            DocumentReference documentReference = Firestore.instance
-                .collection("Users")
-                .document(widget.note.getUserID());
-            documentReference.get().then((value) {
-              //print(value.data['imageUrl'].toString());
-              //img = value.data['imageUrl'].toString();
-              user.setImageUrl(value.data['imageUrl']);
-            });
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Column(
@@ -91,10 +82,10 @@ class _GlobalNoteCardState extends State<GlobalNoteCard> {
                           ],
                         ),
                         Divider(
-                          color: Colors.redAccent,
+                          color: Colors.grey,
                         ),
                         Text(
-                          'gesnigeshgiueshguieshgiueshgiuseghesughseughseughesughesugseoitbusoitbuseuitiuosebtiobusehtiobusethbinusethbnseiiuothbsenbthghesughesughesughesuhguesgh',
+                          widget.note.getDescription(),
                           style: TextStyle(color: Colors.black),
                         ),
                       ],
@@ -103,9 +94,11 @@ class _GlobalNoteCardState extends State<GlobalNoteCard> {
                 ],
               ),
             );
+
           } else {
             return SizedBox();
           }
+
         });
   }
 }
