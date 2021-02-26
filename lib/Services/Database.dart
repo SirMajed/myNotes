@@ -63,7 +63,7 @@ class Database {
   }
 
   static Future<void> deleteNote(Note note) async {
-    return Firestore.instance
+     Firestore.instance
         .collection("Notes")
         .where('date', isEqualTo: note.getDate())
         .getDocuments()
@@ -72,8 +72,19 @@ class Database {
         Firestore.instance
             .collection("Notes")
             .document(docID.documentID)
-            .delete()
-            .then((value) {});
+            .delete();
+      });
+    });
+    Firestore.instance
+        .collection("Public")
+        .where('date', isEqualTo: note.getDate())
+        .getDocuments()
+        .then((value) {
+      value.documents.forEach((docID) {
+        Firestore.instance
+            .collection("Public")
+            .document(docID.documentID)
+            .delete();
       });
     });
   }

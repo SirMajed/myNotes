@@ -73,7 +73,6 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                   setState(() {
                     checkedValue = newValue;
                   });
-
                 },
                 activeColor: Colors.redAccent,
                 controlAffinity:
@@ -115,6 +114,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                         setState(() {
                           isLoading = false;
                           _autoValidate = true;
+                          checkedValue = false;
                         });
                       },
                     ),

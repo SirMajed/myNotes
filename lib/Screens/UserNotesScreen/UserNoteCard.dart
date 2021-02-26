@@ -60,7 +60,7 @@ class UserNoteCard extends StatelessWidget {
                       Text(
                         note.getReadableDate(),
                         style: TextStyle(
-                          color: Theme.of(context).primaryColor,
+                          color: Colors.grey,
                         ),
                       ),
                     ],
