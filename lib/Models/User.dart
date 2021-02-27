@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/services.dart';
 import 'package:my_notes/Models/Account.dart';
 import 'package:my_notes/Services/Authentication.dart';
 import 'package:my_notes/Services/Database.dart';
@@ -40,7 +39,6 @@ class User extends Account {
     DocumentSnapshot doc;
     try {
       doc = await Database.getDocument(id, Database.usersCollection);
-      ;
     } catch (e) {
       logout();
     }

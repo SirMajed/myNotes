@@ -25,11 +25,6 @@ class Database {
       }
     });
   }
-
-  static Future<void> deleteUserDocument(String userID) async {
-    await Firestore.instance.collection('Users').document(userID).delete();
-  }
-
   static Stream<List<Note>> getNotes(String userID, bool isPublic) {
     Stream<List<Note>> notes;
     isPublic

@@ -11,9 +11,6 @@ import 'package:provider/provider.dart';
 import 'Models/Note.dart';
 
 void main() async {
-
-
-  //
   WidgetsFlutterBinding.ensureInitialized();
   await precachePicture(
     ExactAssetPicture(
@@ -28,7 +25,6 @@ void main() async {
       navigatorObservers: [BotToastNavigatorObserver()],
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark().copyWith(
-        
         primaryColor: Color(0xFF0A0E21),
         scaffoldBackgroundColor: Color(0xFF101630), //0A0E21
         highlightColor: Colors.transparent,

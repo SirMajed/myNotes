@@ -28,7 +28,7 @@ class MyScaffold extends StatelessWidget {
               Container(
                 alignment: Alignment.topLeft,
                 padding: EdgeInsets.symmetric(horizontal: 15),
-                height: 30,
+                height: 50,
                 child: Text(
                   title,
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),

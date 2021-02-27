@@ -1,6 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:multiavatar/multiavatar.dart';
 import 'package:my_notes/Models/User.dart';
 import 'package:my_notes/Screens/ProfileScreen/Avatar.dart';
 import 'package:my_notes/Services/Database.dart';
@@ -17,7 +18,6 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   bool loading = false;
   String _newName = '';
-
   @override
   Widget build(BuildContext context) {
     final User user = Provider.of<User>(context, listen: false);
@@ -106,7 +106,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ? CircularProgressIndicator()
                                 : MyButton(
                                     btnText: 'Delete account',
-                                    function: () async {
+                                    function: () {
                                       setState(() {
                                         loading = true;
                                       });
@@ -120,7 +120,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           positiveAction: () async {
                                             await user
                                                 .deleteAccount(user.getID());
-                                                Navigator.pop(context);
+                                            Navigator.pop(context);
                                             BotToast.showSimpleNotification(
                                               title: 'Account deleted!',
                                               backgroundColor: Colors.redAccent,

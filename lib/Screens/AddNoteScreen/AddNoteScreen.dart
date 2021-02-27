@@ -29,7 +29,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
     final User user = Provider.of<User>(context, listen: false);
 
     return MyScaffold(
-      title: 'Add Note',
+      title: 'Welcome, ${user.getName()} 👋',
       body: Padding(
         padding: const EdgeInsets.all(15),
         child: Form(
@@ -100,7 +100,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                             await user.addNote(note);
                             clearField();
                             BotToast.showSimpleNotification(
-                              title: 'Added',
+                              title: 'Note added',
                               backgroundColor: Colors.redAccent,
                               closeIcon: Icon(Icons.check),
                               align: Alignment.bottomCenter,

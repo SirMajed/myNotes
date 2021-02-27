@@ -317,6 +317,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.1"
+  multiavatar:
+    dependency: "direct main"
+    description:
+      name: multiavatar
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.2"
   nested:
     dependency: transitive
     description:

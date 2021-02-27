@@ -32,7 +32,7 @@ class Authentication {
       await Firestore.instance
           .collection('Users')
           .document((account as User).id)
-          .setData((account as User).toJson(), merge: true);
+          .setData((account as User).toJson());
 
       await signIn(account);
     } catch (e) {
@@ -42,11 +42,9 @@ class Authentication {
     }
   }
 
-
   static Future<void> deleteAccount(String userID) async {
     FirebaseUser user = await _instance.currentUser();
     try {
-
       Firestore.instance
           .collection("Notes")
           .where("id", isEqualTo: userID)
@@ -56,9 +54,7 @@ class Authentication {
           Firestore.instance
               .collection("Notes")
               .document(element.documentID)
-              .delete()
-              .then((value) {
-          });
+              .delete();
         });
       });
       Firestore.instance
@@ -83,19 +79,18 @@ class Authentication {
               .collection("Users")
               .document(element.documentID)
               .delete()
-              .then((value) {
-                            user.delete();
-
+              .then((value) async {
+            await user.delete();
           });
         });
       });
-
       // await Database.deleteUserDocument(userID).then((value) {
       //   user.delete();
       // });
-    } on PlatformException catch (e) {
-      print(e.message.toString());
-      signOut();
+    } catch (e) {
+      if (user.uid != null) await user.delete();
+
+      rethrow;
     }
   }
 
