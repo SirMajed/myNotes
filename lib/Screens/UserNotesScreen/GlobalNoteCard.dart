@@ -1,7 +1,6 @@
-import 'package:avatar_glow/avatar_glow.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:my_notes/Models/Note.dart';
 import 'package:my_notes/Models/User.dart';
 
@@ -41,23 +40,24 @@ class _GlobalNoteCardState extends State<GlobalNoteCard> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            AvatarGlow(
-                              glowColor: Colors.redAccent,
-                              endRadius: 40,
-                              child: Material(
-                                elevation: 8.0,
-                                shape: CircleBorder(),
-                                child: CircleAvatar(
-                                  backgroundColor: Colors.grey[100],
-                                  child: ClipOval(
-                                    child: CachedNetworkImage(
-                                        imageUrl: user.getImage()),
-                                  ),
-                                  radius: 30,
-                                ),
-                              ),
+                            CircleAvatar(
+                              backgroundColor: Colors.transparent,
+                              foregroundColor: Colors.transparent,
+                              child: user.getImage().contains('firebasestorage')
+                                  ? CircleAvatar(
+                                      backgroundColor: Colors.grey[100],
+                                      child: ClipOval(
+                                        child: CachedNetworkImage(
+                                            imageUrl: user.getImage()),
+                                      ),
+                                      radius: 25,
+                                    )
+                                  : SvgPicture.network(user.getImage()),
+                              radius: 30,
                             ),
-                            SizedBox(width: 10,),
+                            SizedBox(
+                              width: 10,
+                            ),
                             Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -65,12 +65,13 @@ class _GlobalNoteCardState extends State<GlobalNoteCard> {
                                 Text(
                                   user.getName(),
                                   style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold
-                                  ),
+                                      color: Colors.black,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold),
                                 ),
-                                SizedBox(height: 3,),
+                                SizedBox(
+                                  height: 3,
+                                ),
                                 Text(
                                   widget.note.getPostDate(),
                                   style: TextStyle(
@@ -94,11 +95,9 @@ class _GlobalNoteCardState extends State<GlobalNoteCard> {
                 ],
               ),
             );
-
           } else {
             return SizedBox();
           }
-
         });
   }
 }
