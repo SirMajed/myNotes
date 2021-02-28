@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -84,7 +85,15 @@ class _LoginScreenState extends State<LoginScreen> {
                                     String msg = FirebaseException
                                         .generateReadableMessage(
                                             exception); //firebase exception happened
-                                    print(msg);
+                                    BotToast.showSimpleNotification(
+                                      title: msg,
+                                      backgroundColor: Colors.redAccent,
+                                      closeIcon:
+                                          Icon(Icons.warning_amber_rounded),
+                                      align: Alignment.bottomCenter,
+                                      borderRadius: 8,
+                                      hideCloseButton: false,
+                                    );
                                   } catch (e) {
                                     print('Undefined error');
                                   }

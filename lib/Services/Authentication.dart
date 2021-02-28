@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:my_notes/Models/Account.dart';
 import 'package:my_notes/Models/User.dart';
+import 'package:my_notes/Services/Database.dart';
 
 class Authentication {
   static final FirebaseAuth _instance = FirebaseAuth.instance;
@@ -42,57 +43,39 @@ class Authentication {
     }
   }
 
-  static Future<void> deleteAccount(String userID) async {
-    FirebaseUser user = await _instance.currentUser();
-    try {
-      Firestore.instance
-          .collection("Notes")
-          .where("id", isEqualTo: userID)
-          .getDocuments()
-          .then((value) {
-        value.documents.forEach((element) {
-          Firestore.instance
-              .collection("Notes")
-              .document(element.documentID)
-              .delete();
-        });
-      });
-      Firestore.instance
-          .collection("Public")
-          .where("id", isEqualTo: userID)
-          .getDocuments()
-          .then((value) {
-        value.documents.forEach((element) {
-          Firestore.instance
-              .collection("Public")
-              .document(element.documentID)
-              .delete();
-        });
-      });
-      Firestore.instance
-          .collection("Users")
-          .where("id", isEqualTo: userID)
-          .getDocuments()
-          .then((value) {
-        value.documents.forEach((element) {
-          Firestore.instance
-              .collection("Users")
-              .document(element.documentID)
-              .delete()
-              .then((value) async {
-            await user.delete();
-          });
-        });
-      });
-      // await Database.deleteUserDocument(userID).then((value) {
-      //   user.delete();
-      // });
-    } catch (e) {
-      if (user.uid != null) await user.delete();
+  // static Future deleteAccount(String userID ,String password, String email) async {
+  //   FirebaseUser user = await _instance.currentUser();
+  //   try {
+  //     Database.deleteUserDocuments(userID);
+  //     AuthResult result = await user.reauthenticateWithCredential(
+  //         EmailAuthProvider.getCredential(
+  //             email: email, password: password));
+  //     await result.user.delete();
+  //     // await Database.deleteUserDocument(userID).then((value) {
+  //     //   user.delete();
+  //     // });
+  //   } catch (e) {
+  //     if (user.uid != null) await user.delete();
 
-      rethrow;
+  //     rethrow;
+  //   }
+  // }
+  static Future deleteAccount({String userID ,String password, String email}) async {
+    print(email);
+    try {
+      FirebaseUser user = await _instance.currentUser();
+      AuthCredential credentials =
+          EmailAuthProvider.getCredential(email: email, password: password);
+      print(user);
+      AuthResult result = await user.reauthenticateWithCredential(credentials);
+     await Database.deleteUserDocuments(userID); // called from database class
+      await result.user.delete();
+      return true;
+    } catch (e) {
+      print(e.toString());
+      return null;
     }
-  }
+}
 
   static Future<void> signOut() async {
     return await _instance.signOut();

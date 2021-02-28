@@ -9,6 +9,7 @@ class DialogWithField {
   final String title;
   final String hint;
   final Function onChanged;
+  final bool isPassword;
   bool _loading = false;
   DialogWithField(
       {this.title,
@@ -18,7 +19,8 @@ class DialogWithField {
       this.hint,
       this.onChanged,
       this.negativeAction,
-      this.negativeActionText});
+      this.negativeActionText,
+      this.isPassword});
 
   displayDialog(BuildContext context) {
     return showDialog(
@@ -46,10 +48,8 @@ class DialogWithField {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
-                        "Change your name",
-                        style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.redAccent),
+                        title,
+                        style: TextStyle(fontSize: 16, color: Colors.redAccent),
                       ),
                     ],
                   ),
@@ -59,6 +59,7 @@ class DialogWithField {
                   TextFormField(
                     onChanged: (val) => onChanged(val),
                     initialValue: currentName,
+                    obscureText: isPassword ? true : false,
                     textInputAction: TextInputAction.go,
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
@@ -176,17 +177,15 @@ class DialogWithField {
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
-
                       TextButton(
                         onPressed: () {
-                                return positiveAction();
-                              },
+                          return positiveAction();
+                        },
                         child: Text(
-                                positiveActionText,
-                                style: TextStyle(color: Colors.redAccent),
-                              ),
+                          positiveActionText,
+                          style: TextStyle(color: Colors.redAccent),
+                        ),
                       ),
-
                     ],
                   ),
                 ],

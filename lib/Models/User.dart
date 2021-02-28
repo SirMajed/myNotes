@@ -82,9 +82,9 @@ class User extends Account {
     return await Authentication.signUp(this);
   }
 
-  Future<void> deleteAccount(String userID) async {
-    return await Authentication.deleteAccount(userID);
-  }
+  // Future<void> deleteAccount(String userID) async {
+  //   return await Authentication.deleteAccount(userID);
+  // }
 
   String getID() => id ?? '';
 

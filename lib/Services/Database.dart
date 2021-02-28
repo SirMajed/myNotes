@@ -83,4 +83,42 @@ class Database {
       });
     });
   }
+  static Future<void> deleteUserDocuments(String userID)async{
+     await Firestore.instance
+          .collection("Notes")
+          .where("id", isEqualTo: userID)
+          .getDocuments()
+          .then((value) {
+        value.documents.forEach((element) {
+          Firestore.instance
+              .collection("Notes")
+              .document(element.documentID)
+              .delete();
+        });
+      });
+      await Firestore.instance
+          .collection("Public")
+          .where("id", isEqualTo: userID)
+          .getDocuments()
+          .then((value) {
+        value.documents.forEach((element) {
+          Firestore.instance
+              .collection("Public")
+              .document(element.documentID)
+              .delete();
+        });
+      });
+      await Firestore.instance
+          .collection("Users")
+          .where("id", isEqualTo: userID)
+          .getDocuments()
+          .then((value) {
+        value.documents.forEach((element) {
+          Firestore.instance
+              .collection("Users")
+              .document(element.documentID)
+              .delete();
+        });
+      });
+  }
 }

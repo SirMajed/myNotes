@@ -9,6 +9,7 @@ class MyField extends StatelessWidget {
   final String initialValue;
   final TextEditingController controller;
   final Function validator;
+  final bool isEmail;
   MyField(
       {this.title = '',
       @required this.onChanged,
@@ -17,7 +18,8 @@ class MyField extends StatelessWidget {
       this.icon,
       this.initialValue,
       this.controller,
-      this.validator});
+      this.validator,
+      this.isEmail=false});
   @override
   Widget build(BuildContext context) {
     return TextFormField(
@@ -28,7 +30,7 @@ class MyField extends StatelessWidget {
           return null;
       },
       controller: controller,
-      keyboardType: TextInputType.text,
+      keyboardType: isEmail ? TextInputType.emailAddress : TextInputType.text,
       enabled: true,
       obscureText: isPassword ? true : false,
       maxLines: maxLines,

@@ -1,9 +1,11 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:my_notes/Models/User.dart';
 import 'package:my_notes/Screens/AuthScreen/LoginScreen.dart';
 import 'package:my_notes/Services/FirebaseException.dart';
+import 'package:my_notes/Services/Validations.dart';
 import 'package:my_notes/Widgets/MyButton.dart';
 import 'package:my_notes/Widgets/MyField.dart';
 
@@ -18,6 +20,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   String _password = '';
   String _name = '';
   bool isLoading = false;
+  bool _autoValidate = false;
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +39,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
               ),
               Form(
+                key: formKey,
+                autovalidate: _autoValidate,
                 child: Padding(
                   padding: const EdgeInsets.all(40),
                   child: Column(
@@ -45,6 +51,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         onChanged: (val) {
                           _name = val;
                         },
+                        validator: (val)=>Validations.isEmptyValidation(val),
                       ),
                       SizedBox(
                         height: 15,
@@ -55,6 +62,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         onChanged: (val) {
                           _email = val;
                         },
+                        isEmail: true,
+                        validator: (val)=>Validations.emailValidation(val),
                       ),
                       SizedBox(
                         height: 15,
@@ -66,6 +75,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           _password = val;
                         },
                         isPassword: true,
+                        validator: (val)=>Validations.passwordValidation(val),
                       ),
                       SizedBox(
                         height: 40,
@@ -76,33 +86,44 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               btnText: 'Register',
                               borderColor: Colors.purple[600],
                               function: () async {
-                                setState(() {
-                                  isLoading = true;
-                                });
-                                try {
-                                  User user = new User(
-                                    email: _email,
-                                    password: _password,
-                                    name: _name,
-                                  );
+                                if (formKey.currentState.validate()) {
+                                  setState(() {
+                                    isLoading = true;
+                                  });
+                                  try {
+                                    User user = new User(
+                                      email: _email,
+                                      password: _password,
+                                      name: _name,
+                                    );
 
-                                  await user.register();
-                                  Navigator.pop(context);
-                                  // Navigator.push(context, MaterialPageRoute(
-                                  //   builder: (context) => Provider<User>.value(
-                                  //     value: user,
-                                  //     child: HomeScreen()),
-                                  // ));
-                                } on PlatformException catch (exception) {
-                                  String msg =
-                                      FirebaseException.generateReadableMessage(
-                                          exception); //firebase exception happened
-                                  print(msg);
-                                } catch (e) {
-                                  print('Undefined error');
+                                    await user.register();
+                                    Navigator.pop(context);
+                                    // Navigator.push(context, MaterialPageRoute(
+                                    //   builder: (context) => Provider<User>.value(
+                                    //     value: user,
+                                    //     child: HomeScreen()),
+                                    // ));
+                                  } on PlatformException catch (exception) {
+                                    String msg = FirebaseException
+                                        .generateReadableMessage(
+                                            exception); //firebase exception happened
+                                    BotToast.showSimpleNotification(
+                                      title: msg,
+                                      backgroundColor: Colors.redAccent,
+                                      closeIcon:
+                                          Icon(Icons.warning_amber_rounded),
+                                      align: Alignment.bottomCenter,
+                                      borderRadius: 8,
+                                      hideCloseButton: false,
+                                    );
+                                  } catch (e) {
+                                    print('Undefined error');
+                                  }
                                 }
                                 setState(() {
                                   isLoading = false;
+                                  _autoValidate = true;
                                 });
                               },
                             ),

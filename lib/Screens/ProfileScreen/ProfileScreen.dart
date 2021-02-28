@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:multiavatar/multiavatar.dart';
 import 'package:my_notes/Models/User.dart';
 import 'package:my_notes/Screens/ProfileScreen/Avatar.dart';
+import 'package:my_notes/Services/Authentication.dart';
 import 'package:my_notes/Services/Database.dart';
 import 'package:my_notes/Widgets/MyButton.dart';
 import 'package:my_notes/Widgets/DialogWithField.dart';
@@ -18,9 +19,11 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   bool loading = false;
   String _newName = '';
+  String _password = '';
   @override
   Widget build(BuildContext context) {
     final User user = Provider.of<User>(context, listen: false);
+
     return MyScaffold(
       title: 'Profile',
       body: Center(
@@ -110,27 +113,56 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       setState(() {
                                         loading = true;
                                       });
+                                      // DialogWithField(
+                                      //     title:
+                                      //         'Are you sure you want to delete your account?',
+                                      //     negativeActionText: 'No',
+                                      //     negativeAction: () =>
+                                      //         Navigator.pop(context),
+                                      //     positiveActionText: 'Yes',
+                                      //     positiveAction: () async {
+                                      //       await user
+                                      //           .deleteAccount(user.getID());
+                                      //       Navigator.pop(context);
+                                      //       BotToast.showSimpleNotification(
+                                      //         title: 'Account deleted!',
+                                      //         backgroundColor: Colors.redAccent,
+                                      //         closeIcon: Icon(
+                                      //             Icons.warning_amber_rounded),
+                                      //         align: Alignment.bottomCenter,
+                                      //         borderRadius: 8,
+                                      //         hideCloseButton: false,
+                                      //       );
+                                      //     }).confirmationDialog(context);
                                       DialogWithField(
-                                          title:
-                                              'Are you sure you want to delete your account?',
-                                          negativeActionText: 'No',
-                                          negativeAction: () =>
-                                              Navigator.pop(context),
-                                          positiveActionText: 'Yes',
-                                          positiveAction: () async {
-                                            await user
-                                                .deleteAccount(user.getID());
-                                            Navigator.pop(context);
-                                            BotToast.showSimpleNotification(
-                                              title: 'Account deleted!',
-                                              backgroundColor: Colors.redAccent,
-                                              closeIcon: Icon(
-                                                  Icons.warning_amber_rounded),
-                                              align: Alignment.bottomCenter,
-                                              borderRadius: 8,
-                                              hideCloseButton: false,
-                                            );
-                                          }).confirmationDialog(context);
+                                        title: 'Please enter your password',
+                                        hint: 'Password...',
+                                        negativeActionText: 'No',
+                                        negativeAction: () =>
+                                            Navigator.pop(context),
+                                        onChanged: (val) {
+                                          _password = val;
+                                        },
+                                        isPassword: true,
+                                        positiveActionText: 'Yes',
+                                        positiveAction: () async {
+                                          await Authentication.deleteAccount(
+                                            email: user.getEmail(),
+                                            password: _password,
+                                            userID: user.getID(),
+                                          );
+                                          Navigator.pop(context);
+                                          BotToast.showSimpleNotification(
+                                            title: 'Account deleted!',
+                                            backgroundColor: Colors.redAccent,
+                                            closeIcon: Icon(
+                                                Icons.warning_amber_rounded),
+                                            align: Alignment.bottomCenter,
+                                            borderRadius: 8,
+                                            hideCloseButton: false,
+                                          );
+                                        },
+                                      ).displayDialog(context);
 
                                       setState(() {
                                         loading = false;
