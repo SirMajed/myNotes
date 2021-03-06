@@ -173,4 +173,30 @@ class AvatarGenerator {
     var element = acc[_random.nextInt(acc.length)];
     return element;
   }
+
+  static String femaleTop() {
+    var acc = [
+      'LongHairBigHair',
+      'LongHairBob',
+      'LongHairBun',
+      'LongHairCurly',
+      'LongHairCurvy',
+      'LongHairDreads',
+      'LongHairFrida',
+      'LongHairNotTooLong',
+      'LongHairStraight',
+      'LongHairStraight2',
+    ];
+    final _random = new Random();
+    var element = acc[_random.nextInt(acc.length)];
+    return element;
+  }
+
+  static String generateMaleAvatar() {
+    return 'https://avataaars.io/?accessoriesType=${accessories()}&avatarStyle=Circle&clotheColor=${clothesColor()}&clotheType=${clothes()}&eyeType=${eyeType()}&eyebrowType=${eyebrowType()}&facialHairColor=${facialHairColor()}&facialHairType=${facialHair()}&hairColor=${hairColor()}&mouthType=${mouth()}&skinColor=Light&topType=${top()}';
+  }
+
+  static String generateFemaleAvatar() {
+    return 'https://avataaars.io/?accessoriesType=${accessories()}&avatarStyle=Circle&clotheColor=${clothesColor()}&clotheType=${clothes()}&eyeType=${eyeType()}&eyebrowType=${eyebrowType()}&hairColor=${hairColor()}&mouthType=${mouth()}&skinColor=Light&topType=${femaleTop()}';
+  }
 }

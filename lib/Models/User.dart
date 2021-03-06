@@ -4,16 +4,27 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:my_notes/Models/Account.dart';
 import 'package:my_notes/Services/Authentication.dart';
+import 'package:my_notes/Services/AvatarGenerator.dart';
 import 'package:my_notes/Services/Database.dart';
 import 'package:path/path.dart' as Path;
 import 'Note.dart';
 
 class User extends Account {
   String id;
-
-  User({String name, String email, String password, String id, String imageUrl})
-      : super(
-            name: name, email: email, password: password, imageUrl: imageUrl) {
+  String sex;
+  User({
+    String name,
+    String email,
+    String password,
+    String id,
+    String imageUrl,
+    String sex,
+  }) : super(
+            name: name,
+            email: email,
+            password: password,
+            imageUrl: imageUrl,
+            sex: sex) {
     this.id = id;
   }
 
@@ -23,6 +34,7 @@ class User extends Account {
       'email': super.getEmail(),
       'id': getID(),
       'imageUrl': getImage(),
+      'sex': getSex(),
     };
   }
 
@@ -32,6 +44,7 @@ class User extends Account {
       email: json['email'],
       id: json['id'],
       imageUrl: json['imageUrl'],
+      sex: json['sex'],
     );
   }
 
@@ -45,15 +58,40 @@ class User extends Account {
     return fromJson(doc.data);
   }
 
-  Future<void> addNote(Note note) async {
-    await Firestore.instance
-        .collection('Notes')
-        .document()
-        .setData(note.toJson());
-    await Firestore.instance
-        .collection('Public')
-        .document()
-        .setData(note.toJson());
+  Future<void> updateUser() async {
+    try {
+      await Firestore.instance
+          .collection('Users')
+          .document(getID())
+          .setData(this.toJson());
+    } catch (e) {
+      print('######### ' + e.toString());
+    }
+  }
+
+  Future<void> changeAvatar(String sexType) async{
+    sexType == 'MALE'
+        ? this.setImageUrl(AvatarGenerator.generateMaleAvatar())
+        : this.setImageUrl(AvatarGenerator.generateFemaleAvatar());
+    await this.updateUser();
+  }
+
+  Future<void> addNote(Note note, bool isPublic) async {
+    isPublic
+        ? {
+            await Firestore.instance
+                .collection('Public')
+                .document()
+                .setData(note.toJson()),
+            await Firestore.instance
+                .collection('Notes')
+                .document()
+                .setData(note.toJson())
+          }
+        : await Firestore.instance
+            .collection('Notes')
+            .document()
+            .setData(note.toJson());
   }
 
   static void uploadFile(File file, String userID) async {
@@ -85,7 +123,6 @@ class User extends Account {
   // Future<void> deleteAccount(String userID) async {
   //   return await Authentication.deleteAccount(userID);
   // }
-
   String getID() => id ?? '';
 
   void setID(String value) {

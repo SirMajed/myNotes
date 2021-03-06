@@ -20,7 +20,7 @@ class DialogWithField {
       this.onChanged,
       this.negativeAction,
       this.negativeActionText,
-      this.isPassword});
+      this.isPassword=false});
 
   displayDialog(BuildContext context) {
     return showDialog(
@@ -90,7 +90,7 @@ class DialogWithField {
                         },
                       ),
                       _loading
-                          ? CircularNotchedRectangle()
+                          ? CircularProgressIndicator()
                           : FlatButton(
                               child: new Text(
                                 positiveActionText,
@@ -98,6 +98,7 @@ class DialogWithField {
                               ),
                               onPressed: () {
                                 return positiveAction();
+                                
                               },
                             ),
                     ],

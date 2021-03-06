@@ -1,7 +1,7 @@
-import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:my_notes/Models/Note.dart';
 import 'package:my_notes/Services/Database.dart';
+import 'package:my_notes/Widgets/MyBar.dart';
 class UserNoteCard extends StatelessWidget {
   final Note note;
   final context;
@@ -23,14 +23,10 @@ class UserNoteCard extends StatelessWidget {
               ],
             ),
             onResize: () {
-              BotToast.showSimpleNotification(
-                title: 'Note deleted',
-                backgroundColor: Colors.redAccent,
-                closeIcon: Icon(Icons.check),
-                align: Alignment.bottomCenter,
-                borderRadius: 8,
-                hideCloseButton: false,
-              );
+              MyBar.customFlushBar(
+                                        context: context,
+                                        message: 'Note deleted',
+                                        icon: Icons.check);
             },
             key: Key(note.getDate()),
             onDismissed: (direction) async {

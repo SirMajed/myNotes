@@ -1,11 +1,15 @@
 import 'dart:math';
 
 import 'package:my_notes/Services/AvatarGenerator.dart';
+
+enum Sex { MALE, FEMALE }
+
 abstract class Account {
   String _name;
   String _email;
   String _password;
   String _imageUrl;
+  String _sex;
   String accessories = AvatarGenerator.accessories();
   String top = AvatarGenerator.top();
   String hairColor = AvatarGenerator.hairColor();
@@ -17,11 +21,17 @@ abstract class Account {
   String clothes = AvatarGenerator.clothes();
   String clotheColor = AvatarGenerator.clothesColor();
 
-  Account({String name, String email, String password, String imageUrl}) {
+  Account(
+      {String name,
+      String email,
+      String password,
+      String imageUrl,
+      String sex}) {
     this._email = email;
     this._password = password;
     this._name = name;
     this._imageUrl = imageUrl;
+    this._sex = sex;
   }
   Future<void> login();
   Future<void> logout();
@@ -33,13 +43,14 @@ abstract class Account {
   //   return randomNumber;
   // }
 
-
   String getName() => _name ?? '';
   String getEmail() => _email ?? '';
   String getPassword() => _password ?? '';
-  String getImage() =>
-      _imageUrl ?? 'https://avataaars.io/?accessoriesType=$accessories&avatarStyle=Circle&clotheColor=$clotheColor&clotheType=$clothes&eyeType=$eyeType&eyebrowType=$eyeBrowType&facialHairColor=$facialColor&facialHairType=$facialHair&hairColor=$hairColor&mouthType=$mouth&skinColor=Light&topType=$top';
-      // default img > 'https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/male/${getRan()}.png'
+  String getImage() => _imageUrl;
+  String getSex() => _sex ?? 'NONE';
+  //??
+  //'https://avataaars.io/?accessoriesType=$accessories&avatarStyle=Circle&clotheColor=$clotheColor&clotheType=$clothes&eyeType=$eyeType&eyebrowType=$eyeBrowType&facialHairColor=$facialColor&facialHairType=$facialHair&hairColor=$hairColor&mouthType=$mouth&skinColor=Light&topType=$top';
+  // default img > 'https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/male/${getRan()}.png'
   void setName(String value) {
     this._name = value;
   }
@@ -54,5 +65,8 @@ abstract class Account {
 
   void setImageUrl(String value) {
     this._imageUrl = value;
+  }
+  void setSex(String value) {
+    if (value != null) _sex = value.substring(value.indexOf('.') + 1);
   }
 }

@@ -1,4 +1,3 @@
-import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -6,6 +5,7 @@ import 'package:my_notes/Models/User.dart';
 import 'package:my_notes/Screens/AuthScreen/LoginScreen.dart';
 import 'package:my_notes/Services/FirebaseException.dart';
 import 'package:my_notes/Services/Validations.dart';
+import 'package:my_notes/Widgets/MyBar.dart';
 import 'package:my_notes/Widgets/MyButton.dart';
 import 'package:my_notes/Widgets/MyField.dart';
 
@@ -51,7 +51,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         onChanged: (val) {
                           _name = val;
                         },
-                        validator: (val)=>Validations.isEmptyValidation(val),
+                        validator: (val) => Validations.isEmptyValidation(val),
                       ),
                       SizedBox(
                         height: 15,
@@ -63,7 +63,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           _email = val;
                         },
                         isEmail: true,
-                        validator: (val)=>Validations.emailValidation(val),
+                        validator: (val) => Validations.emailValidation(val),
                       ),
                       SizedBox(
                         height: 15,
@@ -75,7 +75,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           _password = val;
                         },
                         isPassword: true,
-                        validator: (val)=>Validations.passwordValidation(val),
+                        validator: (val) => Validations.passwordValidation(val),
                       ),
                       SizedBox(
                         height: 40,
@@ -90,35 +90,41 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   setState(() {
                                     isLoading = true;
                                   });
+                                  // try {
+                                  //   User user = new User(
+                                  //     email: _email,
+                                  //     password: _password,
+                                  //     name: _name,
+                                  //   );
+
+                                  //   await user.register();
+                                  //   Navigator.pop(context);
+                                  // } on PlatformException catch (exception) {
+                                  //   String msg = FirebaseException
+                                  //       .generateReadableMessage(
+                                  //           exception); //firebase exception happened
+                                  //   MyBar.customFlushBar(
+                                  //       context: context,
+                                  //       message: msg,
+                                  //       icon: Icons.warning_amber_rounded);
+                                  // } catch (e) {
+                                  //   print('Undefined error');
+                                  // }
+
                                   try {
                                     User user = new User(
-                                      email: _email,
-                                      password: _password,
-                                      name: _name,
-                                    );
-
+                                        email: _email,
+                                        password: _password,
+                                        name: _name);
                                     await user.register();
-                                    Navigator.pop(context);
-                                    // Navigator.push(context, MaterialPageRoute(
-                                    //   builder: (context) => Provider<User>.value(
-                                    //     value: user,
-                                    //     child: HomeScreen()),
-                                    // ));
+                                    Navigator.of(context).pop();
                                   } on PlatformException catch (exception) {
                                     String msg = FirebaseException
-                                        .generateReadableMessage(
-                                            exception); //firebase exception happened
-                                    BotToast.showSimpleNotification(
-                                      title: msg,
-                                      backgroundColor: Colors.redAccent,
-                                      closeIcon:
-                                          Icon(Icons.warning_amber_rounded),
-                                      align: Alignment.bottomCenter,
-                                      borderRadius: 8,
-                                      hideCloseButton: false,
-                                    );
-                                  } catch (e) {
-                                    print('Undefined error');
+                                        .generateReadableMessage(exception);
+                                    MyBar.customFlushBar(
+                                        context: context,
+                                        message: msg,
+                                        icon: Icons.warning_amber_rounded);
                                   }
                                 }
                                 setState(() {

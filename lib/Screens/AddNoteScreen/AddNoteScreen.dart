@@ -1,9 +1,10 @@
-import 'package:bot_toast/bot_toast.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:my_notes/Models/Note.dart';
 import 'package:my_notes/Models/User.dart';
 import 'package:my_notes/Services/Validations.dart';
+import 'package:my_notes/Widgets/MyBar.dart';
 import 'package:my_notes/Widgets/MyButton.dart';
 import 'package:my_notes/Widgets/MyField.dart';
 import 'package:my_notes/Widgets/MyScaffold.dart';
@@ -97,15 +98,11 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                               description: description,
                               userID: user.getID(),
                             );
-                            await user.addNote(note);
+                            await user.addNote(note,checkedValue);
                             clearField();
-                            BotToast.showSimpleNotification(
-                              title: 'Note added',
-                              backgroundColor: Colors.redAccent,
-                              closeIcon: Icon(Icons.check),
-                              align: Alignment.bottomCenter,
-                              borderRadius: 8,
-                              hideCloseButton: false,
+                            MyBar.customFlushBar(
+                              context: context,
+                              message: 'Note Added',
                             );
                           } on PlatformException catch (e) {
                             print(e.toString());
@@ -123,6 +120,25 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
         ),
       ),
     );
+  }
+
+  Widget showBar({BuildContext context}) {
+    return Flushbar(
+      message: "Note Added!",
+      dismissDirection: FlushbarDismissDirection.HORIZONTAL,
+      duration: Duration(milliseconds: 1500),
+      flushbarStyle: FlushbarStyle.FLOATING,
+      margin: EdgeInsets.all(8),
+      borderRadius: 8,
+      backgroundColor: Colors.redAccent,
+      shouldIconPulse: false,
+      isDismissible: true,
+      icon: Icon(
+        Icons.check,
+        size: 24,
+      ),
+      animationDuration: Duration(milliseconds: 300),
+    )..show(context);
   }
 
   void clearField() {

@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:my_notes/Models/Account.dart';
 import 'package:my_notes/Models/User.dart';
 import 'package:my_notes/Services/Database.dart';
+import 'package:my_notes/Services/FirebaseException.dart';
 
 class Authentication {
   static final FirebaseAuth _instance = FirebaseAuth.instance;
@@ -17,8 +18,8 @@ class Authentication {
     try {
       await _instance.signInWithEmailAndPassword(
           email: account.getEmail(), password: account.getPassword());
-    } catch (e) {
-      signOut();
+    } catch (exception) {
+      signOut(); // so the user can login again
       rethrow;
     }
   }
@@ -37,7 +38,6 @@ class Authentication {
 
       await signIn(account);
     } catch (e) {
-      print(e.toString());
       signOut();
       rethrow;
     }
@@ -60,7 +60,8 @@ class Authentication {
   //     rethrow;
   //   }
   // }
-  static Future deleteAccount({String userID ,String password, String email}) async {
+  static Future deleteAccount(
+      {String userID, String password, String email}) async {
     print(email);
     try {
       FirebaseUser user = await _instance.currentUser();
@@ -68,14 +69,14 @@ class Authentication {
           EmailAuthProvider.getCredential(email: email, password: password);
       print(user);
       AuthResult result = await user.reauthenticateWithCredential(credentials);
-     await Database.deleteUserDocuments(userID); // called from database class
+      await Database.deleteUserDocuments(userID); // called from database class
       await result.user.delete();
       return true;
-    } catch (e) {
+    } on FirebaseException catch (e) {
       print(e.toString());
-      return null;
+      return Future.error(e);
     }
-}
+  }
 
   static Future<void> signOut() async {
     return await _instance.signOut();

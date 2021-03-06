@@ -1,12 +1,10 @@
 import 'dart:io';
-
-import 'package:avatar_glow/avatar_glow.dart';
-import 'package:bot_toast/bot_toast.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:my_notes/Models/User.dart';
+import 'package:my_notes/Widgets/MyBar.dart';
 
 class Avatar extends StatelessWidget {
   final String imageUrl;
@@ -26,14 +24,22 @@ class Avatar extends StatelessWidget {
               ? CircleAvatar(
                   backgroundColor: Colors.grey[100],
                   child: ClipOval(
-                    child: CachedNetworkImage(imageUrl: imageUrl),
+                    child: CachedNetworkImage(
+                      imageUrl: imageUrl,
+                      placeholder: (context, url) =>
+                          CircularProgressIndicator(),
+                    ),
                   ),
-                  radius: 80,
+                  radius: 70,
                 )
-              : SvgPicture.network(imageUrl
-                  // 'https://avataaars.io/?avatarStyle=Circle&topType=LongHairStraight&accessoriesType=Blank&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Grimace&skinColor=Light',
+              : SvgPicture.network(
+                  imageUrl,
+                  placeholderBuilder: (context) => CircularProgressIndicator(
+                    backgroundColor: Colors.white,
                   ),
-          radius: 80,
+                  
+                ),
+          radius: 70,
         ),
         Container(
           decoration: new BoxDecoration(
@@ -49,23 +55,15 @@ class Avatar extends StatelessWidget {
               if (pickedFile != null) {
                 _imageFile = File(pickedFile.path);
                 User.uploadFile(_imageFile, userID);
-                BotToast.showSimpleNotification(
-                  title: 'Image updated successfully',
-                  backgroundColor: Colors.redAccent,
-                  closeIcon: Icon(Icons.warning_amber_rounded),
-                  align: Alignment.bottomCenter,
-                  borderRadius: 8,
-                  hideCloseButton: false,
-                );
+                MyBar.customFlushBar(
+                    context: context,
+                    message: 'Image updated successfully',
+                    icon: Icons.check);
               } else {
-                BotToast.showSimpleNotification(
-                  title: 'You did not select an image',
-                  backgroundColor: Colors.redAccent,
-                  closeIcon: Icon(Icons.warning_amber_rounded),
-                  align: Alignment.bottomCenter,
-                  borderRadius: 8,
-                  hideCloseButton: false,
-                );
+                MyBar.customFlushBar(
+                    context: context,
+                    message: 'You did not select an image',
+                    icon: Icons.warning_amber_rounded);
               }
             },
           ),

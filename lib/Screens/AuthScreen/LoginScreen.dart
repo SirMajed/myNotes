@@ -1,4 +1,3 @@
-import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -6,6 +5,7 @@ import 'package:my_notes/Models/User.dart';
 import 'package:my_notes/Screens/AuthScreen/RegisterScreen.dart';
 import 'package:my_notes/Services/FirebaseException.dart';
 import 'package:my_notes/Services/Validations.dart';
+import 'package:my_notes/Widgets/MyBar.dart';
 import 'package:my_notes/Widgets/MyButton.dart';
 import 'package:my_notes/Widgets/MyField.dart';
 
@@ -75,27 +75,37 @@ class _LoginScreenState extends State<LoginScreen> {
                                   setState(() {
                                     isLoading = true;
                                   });
+                                  // try {
+                                  //   User user = new User(
+                                  //     email: _email,
+                                  //     password: _password,
+                                  //   );
+                                  //   await user.login();
+                                  // } on PlatformException catch (exception) {
+                                  //   String msg = FirebaseException
+                                  //       .generateReadableMessage(
+                                  //     exception,
+                                  //   );
+                                  //   MyBar.customFlushBar(
+                                  //       context: context,
+                                  //       message: msg,
+                                  //       icon: Icons.warning_amber_rounded);
+                                  // }
+
                                   try {
                                     User user = new User(
-                                      email: _email,
-                                      password: _password,
-                                    );
+                                        email: _email, password: _password);
                                     await user.login();
                                   } on PlatformException catch (exception) {
                                     String msg = FirebaseException
                                         .generateReadableMessage(
-                                            exception); //firebase exception happened
-                                    BotToast.showSimpleNotification(
-                                      title: msg,
-                                      backgroundColor: Colors.redAccent,
-                                      closeIcon:
-                                          Icon(Icons.warning_amber_rounded),
-                                      align: Alignment.bottomCenter,
-                                      borderRadius: 8,
-                                      hideCloseButton: false,
+                                      exception,
                                     );
-                                  } catch (e) {
-                                    print('Undefined error');
+                                    MyBar.customFlushBar(
+                                      context: context,
+                                      message: msg,
+                                      icon: Icons.warning_amber_rounded
+                                    );
                                   }
                                 }
 
