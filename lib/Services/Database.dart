@@ -25,6 +25,7 @@ class Database {
       }
     });
   }
+
   static Stream<List<Note>> getNotes(String userID, bool isPublic) {
     Stream<List<Note>> notes;
     isPublic
@@ -58,7 +59,7 @@ class Database {
   }
 
   static Future<void> deleteNote(Note note) async {
-     Firestore.instance
+    Firestore.instance
         .collection("Notes")
         .where('date', isEqualTo: note.getDate())
         .getDocuments()
@@ -83,42 +84,43 @@ class Database {
       });
     });
   }
-  static Future<void> deleteUserDocuments(String userID)async{
-     await Firestore.instance
-          .collection("Notes")
-          .where("id", isEqualTo: userID)
-          .getDocuments()
-          .then((value) {
-        value.documents.forEach((element) {
-          Firestore.instance
-              .collection("Notes")
-              .document(element.documentID)
-              .delete();
-        });
+
+  static Future<void> deleteUserDocuments(String userID) async {
+    await Firestore.instance
+        .collection("Notes")
+        .where("id", isEqualTo: userID)
+        .getDocuments()
+        .then((value) {
+      value.documents.forEach((element) {
+        Firestore.instance
+            .collection("Notes")
+            .document(element.documentID)
+            .delete();
       });
-      await Firestore.instance
-          .collection("Public")
-          .where("id", isEqualTo: userID)
-          .getDocuments()
-          .then((value) {
-        value.documents.forEach((element) {
-          Firestore.instance
-              .collection("Public")
-              .document(element.documentID)
-              .delete();
-        });
+    });
+    await Firestore.instance
+        .collection("Public")
+        .where("id", isEqualTo: userID)
+        .getDocuments()
+        .then((value) {
+      value.documents.forEach((element) {
+        Firestore.instance
+            .collection("Public")
+            .document(element.documentID)
+            .delete();
       });
-      await Firestore.instance
-          .collection("Users")
-          .where("id", isEqualTo: userID)
-          .getDocuments()
-          .then((value) {
-        value.documents.forEach((element) {
-          Firestore.instance
-              .collection("Users")
-              .document(element.documentID)
-              .delete();
-        });
+    });
+    await Firestore.instance
+        .collection("Users")
+        .where("id", isEqualTo: userID)
+        .getDocuments()
+        .then((value) {
+      value.documents.forEach((element) {
+        Firestore.instance
+            .collection("Users")
+            .document(element.documentID)
+            .delete();
       });
+    });
   }
 }

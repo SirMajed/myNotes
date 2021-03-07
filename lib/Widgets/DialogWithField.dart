@@ -20,13 +20,13 @@ class DialogWithField {
       this.onChanged,
       this.negativeAction,
       this.negativeActionText,
-      this.isPassword=false});
+      this.isPassword = false});
 
   displayDialog(BuildContext context) {
     return showDialog(
       barrierColor: Colors.redAccent.withOpacity(0.1),
       context: context,
-      child: Dialog(
+      builder: (context) => Dialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         insetPadding: EdgeInsets.all(15),
         backgroundColor: Colors.transparent,
@@ -98,7 +98,6 @@ class DialogWithField {
                               ),
                               onPressed: () {
                                 return positiveAction();
-                                
                               },
                             ),
                     ],
@@ -122,7 +121,7 @@ class DialogWithField {
     return showDialog(
       barrierColor: Colors.redAccent.withOpacity(0.1),
       context: context,
-      child: Dialog(
+      builder: (context) => Dialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         insetPadding: EdgeInsets.all(15),
         backgroundColor: Colors.transparent,
