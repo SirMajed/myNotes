@@ -37,50 +37,53 @@ class _GlobalNoteCardState extends State<GlobalNoteCard> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            CircleAvatar(
-                              backgroundColor: Colors.transparent,
-                              foregroundColor: Colors.transparent,
-                              child: user.getImage().contains('firebasestorage')
-                                  ? CircleAvatar(
-                                      backgroundColor: Colors.grey[100],
-                                      child: ClipOval(
-                                        child: CachedNetworkImage(
-                                            imageUrl: user.getImage()),
-                                      ),
-                                      radius: 25,
-                                    )
-                                  : SvgPicture.network(user.getImage()),
-                              radius: 30,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  user.getName(),
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                SizedBox(
-                                  height: 3,
-                                ),
-                                Text(
-                                  widget.note.getPostDate(),
-                                  style: TextStyle(
-                                    color: Colors.grey,
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 5),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              CircleAvatar(
+                                backgroundColor: Colors.transparent,
+                                foregroundColor: Colors.transparent,
+                                child: user.getImage().contains('firebasestorage')
+                                    ? CircleAvatar(
+                                        backgroundColor: Colors.grey[100],
+                                        child: ClipOval(
+                                          child: CachedNetworkImage(
+                                              imageUrl: user.getImage()),
+                                        ),
+                                        radius: 25,
+                                      )
+                                    : SvgPicture.network(user.getImage()),
+                                radius: 30,
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    user.getName(),
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ],
+                                  SizedBox(
+                                    height: 3,
+                                  ),
+                                  Text(
+                                    widget.note.getPostDate(),
+                                    style: TextStyle(
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                         Divider(
                           color: Colors.grey,

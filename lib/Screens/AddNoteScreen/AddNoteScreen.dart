@@ -1,4 +1,3 @@
-import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:my_notes/Models/Note.dart';
@@ -103,6 +102,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                             MyBar.customFlushBar(
                               context: context,
                               message: 'Note Added',
+                              icon: Icons.check
                             );
                           } on PlatformException catch (e) {
                             print(e.toString());
@@ -122,24 +122,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
     );
   }
 
-  Widget showBar({BuildContext context}) {
-    return Flushbar(
-      message: "Note Added!",
-      dismissDirection: FlushbarDismissDirection.HORIZONTAL,
-      duration: Duration(milliseconds: 1500),
-      flushbarStyle: FlushbarStyle.FLOATING,
-      margin: EdgeInsets.all(8),
-      borderRadius: 8,
-      backgroundColor: Colors.redAccent,
-      shouldIconPulse: false,
-      isDismissible: true,
-      icon: Icon(
-        Icons.check,
-        size: 24,
-      ),
-      animationDuration: Duration(milliseconds: 300),
-    )..show(context);
-  }
+
 
   void clearField() {
     titleController.clear();

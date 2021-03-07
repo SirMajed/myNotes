@@ -1,3 +1,4 @@
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -9,7 +10,6 @@ import 'package:provider/provider.dart';
 import 'Models/Note.dart';
 
 void main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
   await precachePicture(
     ExactAssetPicture(
@@ -44,7 +44,6 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     return StreamBuilder<FirebaseUser>(
       stream: Authentication.getUserState(),
       builder: (context, snapshot) {
