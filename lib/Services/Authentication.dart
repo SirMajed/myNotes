@@ -43,6 +43,10 @@ class Authentication {
     }
   }
 
+  static Future<void> resetPassword({String email}) async {
+    await _instance.sendPasswordResetEmail(email: email);
+  }
+
   // static Future deleteAccount(String userID ,String password, String email) async {
   //   FirebaseUser user = await _instance.currentUser();
   //   try {

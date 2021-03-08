@@ -120,6 +120,10 @@ class User extends Account {
     return await Authentication.signUp(this);
   }
 
+  static Future<void> resetPassword(String email)async{
+    await Authentication.resetPassword(email: email);
+  }
+
   // Future<void> deleteAccount(String userID) async {
   //   return await Authentication.deleteAccount(userID);
   // }

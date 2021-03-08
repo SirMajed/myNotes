@@ -38,7 +38,8 @@ dependencies:
   share: ^2.0.0
   expansion_card: ^0.1.0
   another_flushbar: ^1.10.13
-
+  rflutter_alert: ^1.1.0
+  sliding_sheet: ^0.4.1
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0
