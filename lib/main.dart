@@ -57,7 +57,7 @@ void main() async {
         Provider<Note>(
           create: (context) => Note(),
         ),
-      ], child:  WelcomeScreen()),
+      ], child:  Splash()),
     ),
   );
 }
