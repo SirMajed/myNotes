@@ -64,16 +64,29 @@ class MyField extends StatelessWidget {
   }
 
   static TextFormField myField2(
-      {Function function, String hint, BuildContext context}) {
+      {Function function,
+      String hint,
+      BuildContext context,
+      bool isPasword = false,
+      Function validator,
+      String initialValue=''}) {
     return TextFormField(
       style: TextStyle(color: Theme.of(context).primaryColor),
       onChanged: (val) {
         if (function != null) function(val);
       },
+      initialValue: initialValue,
+      validator: (val) {
+        if (validator != null)
+          return validator(val);
+        else
+          return null;
+      },
       //initialValue: currentName,
       //obscureText: isPassword ? true : false,
       textInputAction: TextInputAction.go,
       keyboardType: TextInputType.text,
+      obscureText: isPasword ? true : false,
       decoration: InputDecoration(
           enabledBorder: UnderlineInputBorder(
             borderSide: BorderSide(color: Colors.black),

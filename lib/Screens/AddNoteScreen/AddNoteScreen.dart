@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:my_notes/Models/Note.dart';
 import 'package:my_notes/Models/User.dart';
 import 'package:my_notes/Services/Validations.dart';
@@ -82,7 +83,10 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                 height: 25,
               ),
               isLoading
-                  ? CircularProgressIndicator()
+                  ? SpinKitFadingCube(
+                    color: Colors.redAccent,
+                    size: 20.0,
+                  )
                   : MyButton(
                       btnText: 'Add note',
                       function: () async {
@@ -97,13 +101,12 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                               description: description,
                               userID: user.getID(),
                             );
-                            await user.addNote(note,checkedValue);
+                            await user.addNote(note, checkedValue);
                             clearField();
                             MyBar.customFlushBar(
-                              context: context,
-                              message: 'Note Added',
-                              icon: Icons.check
-                            );
+                                context: context,
+                                message: 'Note Added',
+                                icon: Icons.check);
                           } on PlatformException catch (e) {
                             print(e.toString());
                           }
@@ -121,8 +124,6 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
       ),
     );
   }
-
-
 
   void clearField() {
     titleController.clear();

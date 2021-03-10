@@ -14,7 +14,7 @@ class UserNoteCard extends StatelessWidget {
       child: ExpansionCard(
         borderRadius: 20,
         background: Image.asset(
-          "assets/solar.gif",
+          "assets/space.gif",
           fit: BoxFit.cover,
         ),
         title: Container(
@@ -50,8 +50,9 @@ class UserNoteCard extends StatelessWidget {
               // overflow: TextOverflow.ellipsis,
               // maxLines: 4,
               style: TextStyle(
-                fontSize: 20,
-                fontFamily: 'BalooBhai',
+                fontSize: 16,
+                fontWeight: FontWeight.w900,
+                fontFamily: 'Baloo Bhai 2',
                 color: Colors.white,
               ),
             ),

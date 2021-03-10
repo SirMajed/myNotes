@@ -1,14 +1,25 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:my_notes/Services/Validations.dart';
 import 'package:my_notes/Widgets/MyButton.dart';
 import 'package:my_notes/Widgets/MyField.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';
 
 class SlidingBottom {
-  static String email = '';
+  static String userInput = '';
+  static GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
   static void showAsBottomSheet({
     BuildContext context,
     Function btnFunction,
+    String title,
+    String textFieldHint,
+    String buttonText,
+    bool emailValidation = false,
+    bool passwordValidation = false,
+    bool isPassword = false,
+    String currentText = '',
   }) async {
     bool loading = false;
     await showSlidingBottomSheet(context, builder: (context) {
@@ -34,23 +45,38 @@ class SlidingBottom {
                     padding: const EdgeInsets.all(16),
                     child: Column(
                       children: [
-                        Text('Reset Password',
-                            style: TextStyle(
-                                color: Colors.black.withOpacity(0.7),
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16)),
+                        Text(
+                          title,
+                          style: TextStyle(
+                              color: Colors.black.withOpacity(0.7),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16),
+                        ),
                         SizedBox(
                           height: 20,
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 32),
-                          child: MyField.myField2(
+                          child: Form(
+                            key: formKey,
+                            child: MyField.myField2(
+                              isPasword: isPassword,
                               context: context,
                               function: (val) {
-                                email = val;
-                                print(email);
+                                userInput = val;
                               },
-                              hint: 'Enter your email...'),
+                              hint: textFieldHint,
+                              initialValue: currentText,
+                              validator: (val) {
+                                if (emailValidation == true) {
+                                  return Validations.emailValidation(val);
+                                } else if (passwordValidation == true) {
+                                  return Validations.passwordValidation(val);
+                                } else
+                                  return Validations.isEmptyValidation(val);
+                              },
+                            ),
+                          ),
                         ),
                         SizedBox(
                           height: 30,
@@ -58,18 +84,24 @@ class SlidingBottom {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 32),
                           child: loading
-                              ? CircularProgressIndicator()
+                              ? SpinKitFadingCube(
+                                  color: Colors.redAccent,
+                                  size: 20.0,
+                                )
                               : MyButton(
-                                  btnText: 'Reset Password',
-                                  function: () async{
-                                    setState(() {
-                                      loading = true;
-                                    });
-                                     await btnFunction(email);
+                                  btnText: buttonText,
+                                  function: () async {
+                                    if (formKey.currentState.validate()) {
+                                      setState(() {
+                                        loading = true;
+                                      });
+                                      await btnFunction(userInput);
+                                    }
+
                                     setState(() {
                                       loading = false;
                                     });
-
+                                    //Navigator.pop(context);
                                   },
                                   borderColor: Theme.of(context).primaryColor,
                                   textColor: Colors.redAccent,

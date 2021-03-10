@@ -1,11 +1,13 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:introduction_screen/introduction_screen.dart';
 import 'package:my_notes/Models/User.dart';
 import 'package:my_notes/Screens/AuthScreen/LoginScreen.dart';
 import 'package:my_notes/Screens/HomeScreen/HomeScreen.dart';
+import 'package:my_notes/Screens/WelcomeScreen/WelcomeScreen.dart';
 import 'package:my_notes/Services/Authentication.dart';
+import 'package:my_notes/Widgets/Splash.dart';
 import 'package:provider/provider.dart';
 import 'Models/Note.dart';
 
@@ -18,6 +20,28 @@ void main() async {
     ),
     null,
   );
+  await precachePicture(
+    ExactAssetPicture(
+      SvgPicture.svgStringDecoder,
+      'assets/share_content.svg',
+    ),
+    null,
+  );
+  await precachePicture(
+    ExactAssetPicture(
+      SvgPicture.svgStringDecoder,
+      'assets/share.svg',
+    ),
+    null,
+  );
+  await precachePicture(
+    ExactAssetPicture(
+      SvgPicture.svgStringDecoder,
+      'assets/write.svg',
+    ),
+    null,
+  );
+
   runApp(
     MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -26,17 +50,14 @@ void main() async {
         scaffoldBackgroundColor: Color(0xFF101630), //0A0E21
         highlightColor: Colors.transparent,
         splashColor: Colors.transparent,
-        accentColor: Colors.pink,
+        accentColor: Colors.redAccent,
         textSelectionColor: Colors.pink[900],
       ),
-      home: MultiProvider(
-        providers: [
-          Provider<Note>(
-            create: (context) => Note(),
-          ),
-        ],
-        child: MyApp(),
-      ),
+      home: MultiProvider(providers: [
+        Provider<Note>(
+          create: (context) => Note(),
+        ),
+      ], child:  WelcomeScreen()),
     ),
   );
 }
@@ -63,13 +84,7 @@ class MyApp extends StatelessWidget {
                   return SizedBox();
                 }
               } else {
-                return Scaffold(
-                  body: Center(
-                    child: CircularProgressIndicator(
-                      strokeWidth: 1,
-                    ),
-                  ),
-                );
+                return Scaffold(body: SizedBox());
               }
             },
           );

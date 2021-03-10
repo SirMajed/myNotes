@@ -11,9 +11,9 @@ import 'package:my_notes/Services/AvatarGenerator.dart';
 import 'package:my_notes/Services/Database.dart';
 import 'package:my_notes/Services/FirebaseException.dart';
 import 'package:my_notes/Widgets/MyBar.dart';
-import 'package:my_notes/Widgets/DialogWithField.dart';
 import 'package:my_notes/Widgets/MyScaffold.dart';
 import 'package:provider/provider.dart';
+import 'package:my_notes/Widgets/SlidingBottom.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -22,8 +22,6 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   bool loading = false;
-  String _newName = '';
-  String _password = '';
 
   @override
   Widget build(BuildContext context) {
@@ -50,8 +48,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           .collection('Users')
                           .document(user.getID())
                           .snapshots(),
-                      builder:
-                          (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                      builder: (_, AsyncSnapshot<DocumentSnapshot> snapshot) {
                         if (snapshot.data != null && snapshot.data.exists) {
                           var userDocument = snapshot.data;
                           if (userDocument['sex'] == 'NONE') {
@@ -121,21 +118,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         alignment: Alignment.centerRight,
                                         child: IconButton(
                                           onPressed: () {
-                                            DialogWithField(
-                                              currentName: userDocument['name'],
-                                              onChanged: (val) {
-                                                _newName = val;
-                                              },
-                                              title: 'Change Your Name',
-                                              hint: 'Enter your new name',
-                                              positiveActionText: 'Update',
-                                              positiveAction: () async {
-                                                await Database.updateName(
-                                                    user.getID(), _newName);
-
-                                                Navigator.pop(context);
-                                              },
-                                            ).displayDialog(context);
+                                            SlidingBottom.showAsBottomSheet(
+                                                context: _,
+                                                buttonText: 'Update name',
+                                                currentText:
+                                                    userDocument['name'],
+                                                textFieldHint:
+                                                    'Enter your new name...',
+                                                title: 'Update your name',
+                                                btnFunction:
+                                                    (String newName) async {
+                                                  try {
+                                                    await Database.updateName(
+                                                        user.getID(), newName);
+                                                    Navigator.pop(context);
+                                                    MyBar.customFlushBar(
+                                                        context: context,
+                                                        icon: Icons.check,
+                                                        message:
+                                                            'Name updated');
+                                                  } catch (e) {
+                                                    print(e.toString());
+                                                  }
+                                                });
                                           },
                                           icon: Icon(Icons.edit_outlined),
                                         ),
@@ -150,7 +155,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                   ProfileCard(
                                     loading: loading,
-                                    function: () async {
+                                    onPressed: () async {
                                       setState(() {
                                         loading = true;
                                       });
@@ -167,7 +172,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     title: 'Generate Avatar',
                                   ),
                                   ProfileCard(
-                                    function: () async {
+                                    onPressed: () async {
                                       await user.logout();
                                       MyBar.customFlushBar(
                                           context: context,
@@ -178,49 +183,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     title: 'Sign Out',
                                   ),
                                   ProfileCard(
-                                    function: () {
-                                      setState(() {
-                                        loading = true;
-                                      });
-                                      DialogWithField(
-                                        title: 'Please enter your password',
-                                        hint: 'Password...',
-                                        negativeActionText: 'No',
-                                        negativeAction: () =>
-                                            Navigator.pop(context),
-                                        onChanged: (val) {
-                                          _password = val;
-                                        },
+                                    onPressed: () {
+                                      SlidingBottom.showAsBottomSheet(
+                                        title: 'Delete your account',
+                                        context: _,
+                                        passwordValidation: true,
                                         isPassword: true,
-                                        positiveActionText: 'Yes',
-                                        positiveAction: () async {
+                                        textFieldHint: 'Enter your password...',
+                                        buttonText: 'Delete Account',
+                                        btnFunction: (String password) async {
                                           try {
                                             await Authentication.deleteAccount(
                                               email: user.getEmail(),
-                                              password: _password,
+                                              password: password,
                                               userID: user.getID(),
                                             );
-                                            Navigator.of(context,
-                                                    rootNavigator: true)
-                                                .pop();
+
+                                            Navigator.pop(context);
                                             MyBar.customFlushBar(
                                                 context: context,
-                                                message: 'Account deleted!',
-                                                icon: Icons.check);
-                                          } on PlatformException catch (ex) {
+                                                icon: Icons.check,
+                                                message: 'Account deleted');
+                                          } on PlatformException catch (e) {
                                             String msg = FirebaseException
-                                                .generateReadableMessage(ex);
+                                                .generateReadableMessage(e);
                                             MyBar.customFlushBar(
                                                 context: context,
-                                                message: msg,
                                                 icon: Icons
-                                                    .warning_amber_rounded);
+                                                    .warning_amber_outlined,
+                                                message: msg);
                                           }
                                         },
-                                      ).displayDialog(context);
-                                      setState(() {
-                                        loading = false;
-                                      });
+                                      );
                                     },
                                     icon: Icons.delete,
                                     title: 'Delete Account',

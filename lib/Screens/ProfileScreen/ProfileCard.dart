@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class ProfileCard extends StatelessWidget {
-  final Function function;
+  final Function onPressed;
   final String title;
   final IconData icon;
   final bool loading;
 
-  ProfileCard({this.function, this.title, this.icon, this.loading = false});
+  ProfileCard({this.onPressed, this.title, this.icon, this.loading = false});
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -16,7 +17,7 @@ class ProfileCard extends StatelessWidget {
       color: Theme.of(context).primaryColor,
       elevation: 5,
       child: ListTile(
-        onTap: loading ? null : function,
+        onTap: ()=> onPressed(),
         leading: loading
             ? SizedBox()
             : Icon(
@@ -27,7 +28,10 @@ class ProfileCard extends StatelessWidget {
             ? Container(
                 padding: EdgeInsets.only(right: 60),
                 alignment: Alignment.centerLeft,
-                child: Center(child: CircularProgressIndicator(strokeWidth: 3)),
+                child: Center(child: SpinKitFadingCube(
+                    color: Colors.redAccent,
+                    size: 20.0,
+                  ),),
               )
             : Text(title),
       ),

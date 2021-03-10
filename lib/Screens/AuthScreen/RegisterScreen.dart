@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:my_notes/Models/User.dart';
 import 'package:my_notes/Screens/AuthScreen/LoginScreen.dart';
@@ -81,7 +82,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         height: 40,
                       ),
                       isLoading
-                          ? CircularProgressIndicator()
+                          ? SpinKitFadingCube(
+                    color: Colors.redAccent,
+                    size: 20.0,
+                  )
                           : MyButton(
                               btnText: 'Register',
                               borderColor: Colors.purple[600],

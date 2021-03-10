@@ -14,6 +14,7 @@ class MyButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: isExpanded ? double.infinity : btnWidth,
+      height: 40,
       child: FlatButton(
         splashColor: Colors.transparent,
         hoverColor: Colors.transparent,
@@ -26,7 +27,7 @@ class MyButton extends StatelessWidget {
           ),
         ),
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(18),
             side: BorderSide(color: borderColor)),
       ),
     );

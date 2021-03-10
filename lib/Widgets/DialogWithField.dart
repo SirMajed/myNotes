@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class DialogWithField {
   final String positiveActionText;
@@ -85,7 +86,10 @@ class DialogWithField {
                     },
                   ),
                   _loading
-                      ? CircularProgressIndicator()
+                      ? SpinKitFadingCube(
+                    color: Colors.redAccent,
+                    size: 20.0,
+                  )
                       : FlatButton(
                           child: new Text(
                             positiveActionText,

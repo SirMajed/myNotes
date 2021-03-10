@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:my_notes/Models/Note.dart';
 import 'package:my_notes/Models/User.dart';
 import 'package:my_notes/Screens/UserNotesScreen/GlobalNoteCard.dart';
@@ -118,7 +119,10 @@ class _UserNotesScreenState extends State<UserNotesScreen> {
             else
               return showEmptyNotes(isPublic);
           } else {
-            return Expanded(child: Center(child: CircularProgressIndicator()));
+            return Expanded(child: Center(child: SpinKitFadingCube(
+                    color: Colors.redAccent,
+                    size: 20.0,
+                  ),));
           }
         },
       ),

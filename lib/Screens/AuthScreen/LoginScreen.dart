@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:my_notes/Models/User.dart';
 import 'package:my_notes/Screens/AuthScreen/RegisterScreen.dart';
 import 'package:my_notes/Services/FirebaseException.dart';
 import 'package:my_notes/Services/Validations.dart';
-import 'package:my_notes/Widgets/BottomSheet.dart';
+import 'package:my_notes/Widgets/SlidingBottom.dart';
 import 'package:my_notes/Widgets/MyBar.dart';
 import 'package:my_notes/Widgets/MyButton.dart';
 import 'package:my_notes/Widgets/MyField.dart';
@@ -47,6 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Column(
                     children: [
                       MyField(
+                        isEmail: true,
                         title: 'Email...',
                         icon: Icons.email_outlined,
                         onChanged: (val) {
@@ -76,11 +78,15 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             onPressed: () {
                               SlidingBottom.showAsBottomSheet(
+                                  title: 'Reset Password',
+                                  textFieldHint: 'Enter your email...',
+                                  buttonText: 'Reset Password',
                                   context: context,
+                                  emailValidation: true,
                                   btnFunction: (String email) async {
                                     try {
                                       await User.resetPassword(email);
-                                     Navigator.pop(context);
+                                      Navigator.pop(context);
                                       MyBar.customFlushBar(
                                           context: context,
                                           icon: Icons.check,
@@ -109,7 +115,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: 40,
                       ),
                       isLoading
-                          ? CircularProgressIndicator()
+                          ? SpinKitFadingCube(
+                    color: Colors.redAccent,
+                    size: 20.0,
+                  )
                           : MyButton(
                               borderColor: Colors.pink[800],
                               btnText: 'Sign In',
