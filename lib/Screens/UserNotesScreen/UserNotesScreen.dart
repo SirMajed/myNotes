@@ -119,10 +119,13 @@ class _UserNotesScreenState extends State<UserNotesScreen> {
             else
               return showEmptyNotes(isPublic);
           } else {
-            return Expanded(child: Center(child: SpinKitFadingCube(
-                    color: Colors.redAccent,
-                    size: 20.0,
-                  ),));
+            return Expanded(
+                child: Center(
+              child: SpinKitFadingCube(
+                color: Colors.redAccent,
+                size: 20.0,
+              ),
+            ));
           }
         },
       ),

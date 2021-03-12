@@ -25,10 +25,11 @@ class MyScaffold extends StatelessWidget {
       body: Column(
         children: [
           Row(
+
             children: [
               Container(
-                alignment: Alignment.topLeft,
-                padding: EdgeInsets.symmetric(horizontal: 15),
+                alignment: Alignment.center,
+                padding: EdgeInsets.symmetric(horizontal: 15,vertical: 0),
                 height: 50,
                 child: Text(
                   title,
