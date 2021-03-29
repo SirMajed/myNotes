@@ -60,6 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: 15,
                       ),
                       MyField(
+                        
                         title: 'Password...',
                         icon: Icons.lock_open,
                         onChanged: (val) {
@@ -116,9 +117,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       isLoading
                           ? SpinKitFadingCube(
-                    color: Colors.redAccent,
-                    size: 20.0,
-                  )
+                              color: Colors.redAccent,
+                              size: 20.0,
+                            )
                           : MyButton(
                               borderColor: Colors.pink[800],
                               btnText: 'Sign In',
