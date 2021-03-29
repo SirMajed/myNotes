@@ -1,10 +1,11 @@
 
 <table>
   <tr>
-    <td><img src="s1.png?raw=true"</td>
-    <td><img src="s2.png?raw=true" </td>
-    <td><img src="s4.png?raw=true" </td>
-    <td><img src="s3.png?raw=true" </td>
+    <td><img src="screenshots/1.png?raw=true"</td>
+    <td><img src="screenshots/2.png?raw=true" </td>
+    <td><img src="screenshots/3.png?raw=true" </td>
+    <td><img src="screenshots/4.png?raw=true" </td>
+    <td><img src="screenshots/5.png?raw=true" </td>
   </tr>
  </table>
 
